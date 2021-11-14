@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 require('dotenv').config();
+var performance = require('perf_hooks').performance;
 var promisify = require('util').promisify;
 var exec = promisify(require('child_process').exec);
-var performance = require('perf_hooks').performance;
 var githubUsername = process.env.GITHUB_USERNAME;
 var githubPassword = process.env.GITHUB_PASSWORD;
 var projectPath = process.env.PROJECT_PATH;
@@ -134,10 +134,29 @@ var build = function () { return __awaiter(void 0, void 0, void 0, function () {
  * @returns { Promise } Promise with object of type Response.
  */
 var cleanFolder = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var response;
-    return __generator(this, function (_a) {
-        response = { code: 1, status: true, msg: '' };
-        return [2 /*return*/, response];
+    var response, query, _a, stdout, stderr, response, error_2, response;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                if (!githubPagePath) {
+                    response = { code: 1, status: false, msg: 'github page path is required' };
+                    return [2 /*return*/, response];
+                }
+                query = "rm -rf " + githubPagePath + "/*";
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, exec(query)];
+            case 2:
+                _a = _b.sent(), stdout = _a.stdout, stderr = _a.stderr;
+                response = { code: 2, status: true, msg: 'clean destiny folder completed' };
+                return [2 /*return*/, response];
+            case 3:
+                error_2 = _b.sent();
+                response = { code: 3, status: false, msg: error_2 };
+                return [2 /*return*/, response];
+            case 4: return [2 /*return*/];
+        }
     });
 }); };
 /**

@@ -1,8 +1,8 @@
 require('dotenv').config()
 
+const { performance } = require('perf_hooks');
 const {promisify} = require('util')
 const exec = promisify(require('child_process').exec)
-const { performance } = require('perf_hooks');
 
 const githubUsername: string | undefined = process.env.GITHUB_USERNAME
 const githubPassword: string | undefined = process.env.GITHUB_PASSWORD
@@ -111,9 +111,27 @@ const build = async (): Promise<Response> => {
  * @returns { Promise } Promise with object of type Response.
  */
 const cleanFolder = async (): Promise<Response> => {
-    // TODO
-    const response : Response = { code: 1, status: true, msg: '' }
-    return response
+
+    if(!githubPagePath){
+        const response : Response = { code: 1, status: false, msg: 'github page path is required' }
+        return response
+    }
+
+    const query = `rm -rf ${githubPagePath}/*`
+
+    try {
+
+        const { stdout, stderr } = await exec(query);
+        const response : Response = { code: 2, status: true, msg: 'clean destiny folder completed' }
+        return response
+
+    } catch (error: any) {
+
+        const response : Response = { code: 3, status: false, msg: error }
+        return response
+
+    }
+
 }
 
 /**
