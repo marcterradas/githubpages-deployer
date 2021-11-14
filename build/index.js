@@ -45,9 +45,10 @@ var projectPath = process.env.PROJECT_PATH;
 var githubPagePath = process.env.GITHUBPAGE_PATH;
 /**
  * init method
+ * @returns { Promise<boolean> } false if any error, true if all okay.
  */
 var init = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var startTime, startBuildTime, buildResponse, endBuildTime, endTime;
+    var startTime, startBuildTime, buildResponse, endBuildTime, startCleanFolderTime, cleanFolderResponse, endCleanFolderTime, startMoveDistFolderTime, moveDistFolderResponse, endMoveDistFolderTime, startPushToGithub, gitPushResponse, endTimeGitPush, endTime;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -57,19 +58,49 @@ var init = function () { return __awaiter(void 0, void 0, void 0, function () {
             case 1:
                 buildResponse = _a.sent();
                 if (!buildResponse.status) {
-                    console.log(buildResponse);
-                    return [2 /*return*/];
+                    console.error(buildResponse);
+                    return [2 /*return*/, false];
                 }
                 endBuildTime = (performance.now() - startBuildTime) / 1000;
                 console.log("\u2705 build completed! time: " + endBuildTime.toFixed(2) + " seconds");
+                startCleanFolderTime = performance.now();
+                return [4 /*yield*/, cleanFolder()];
+            case 2:
+                cleanFolderResponse = _a.sent();
+                if (!cleanFolderResponse.status) {
+                    console.error(cleanFolderResponse);
+                    return [2 /*return*/, false];
+                }
+                endCleanFolderTime = (performance.now() - startCleanFolderTime) / 1000;
+                console.log("\u2705 clean destiny folder completed! time: " + endCleanFolderTime.toFixed(2) + " seconds");
+                startMoveDistFolderTime = performance.now();
+                return [4 /*yield*/, moveDistFolder()];
+            case 3:
+                moveDistFolderResponse = _a.sent();
+                if (!moveDistFolderResponse.status) {
+                    console.error(moveDistFolderResponse);
+                    return [2 /*return*/, false];
+                }
+                endMoveDistFolderTime = (performance.now() - startMoveDistFolderTime) / 1000;
+                console.log("\u2705 move dist folder to destiny folder completed! time: " + endMoveDistFolderTime.toFixed(2) + " seconds");
+                startPushToGithub = performance.now();
+                return [4 /*yield*/, gitPush()];
+            case 4:
+                gitPushResponse = _a.sent();
+                if (!gitPushResponse.status) {
+                    console.error(gitPushResponse);
+                    return [2 /*return*/, false];
+                }
+                endTimeGitPush = (performance.now() - startPushToGithub) / 1000;
+                console.log("\u2705 git push completed! time: " + endTimeGitPush.toFixed(2) + " seconds");
                 endTime = (performance.now() - startTime) / 1000;
                 console.log("\u2705 deploy completed! total time: " + endTime.toFixed(2) + " seconds");
-                return [2 /*return*/];
+                return [2 /*return*/, true];
         }
     });
 }); };
 /**
- * Build vue project from project path
+ * Build vue project from project path.
  * @returns { Promise } Promise with object of type Response.
  */
 var build = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -96,6 +127,39 @@ var build = function () { return __awaiter(void 0, void 0, void 0, function () {
                 return [2 /*return*/, response];
             case 4: return [2 /*return*/];
         }
+    });
+}); };
+/**
+ * Clean destiny folder.
+ * @returns { Promise } Promise with object of type Response.
+ */
+var cleanFolder = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var response;
+    return __generator(this, function (_a) {
+        response = { code: 1, status: true, msg: '' };
+        return [2 /*return*/, response];
+    });
+}); };
+/**
+ * Move dist folder to destiny folder.
+ * @returns { Promise } Promise with object of type Response.
+ */
+var moveDistFolder = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var response;
+    return __generator(this, function (_a) {
+        response = { code: 1, status: true, msg: '' };
+        return [2 /*return*/, response];
+    });
+}); };
+/**
+ * pull changes to github
+ * @returns { Promise } Promise with object of type Response.
+ */
+var gitPush = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var response;
+    return __generator(this, function (_a) {
+        response = { code: 1, status: true, msg: '' };
+        return [2 /*return*/, response];
     });
 }); };
 init();

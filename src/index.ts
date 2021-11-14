@@ -17,8 +17,9 @@ interface Response {
 
 /**
  * init method
+ * @returns { Promise<boolean> } false if any error, true if all okay.
  */
-const init = async (): Promise<void> => {
+const init = async (): Promise<boolean> => {
 
     const startTime: number = performance.now()
 
@@ -27,24 +28,58 @@ const init = async (): Promise<void> => {
     const buildResponse: Response = await build()
 
     if(!buildResponse.status){
-        console.log(buildResponse)
-        return
+        console.error(buildResponse)
+        return false
     }
 
     const endBuildTime: number = (performance.now() - startBuildTime) / 1000
     console.log(`\u2705 build completed! time: ${endBuildTime.toFixed(2)} seconds`)
 
-    // TODO: move dist project to github page folder
+    // clean github page folder
+    const startCleanFolderTime: number = performance.now()
+    const cleanFolderResponse: Response = await cleanFolder()
+ 
+    if(!cleanFolderResponse.status){
+        console.error(cleanFolderResponse)
+        return false
+    }
 
-    // TODO: deploy to github
+    const endCleanFolderTime: number = (performance.now() - startCleanFolderTime) / 1000
+    console.log(`\u2705 clean destiny folder completed! time: ${endCleanFolderTime.toFixed(2)} seconds`)
+
+    // move dist folder to github page folder
+    const startMoveDistFolderTime: number = performance.now()
+    const moveDistFolderResponse: Response = await moveDistFolder()
+
+    if(!moveDistFolderResponse.status){
+        console.error(moveDistFolderResponse)
+        return false
+    }
+
+    const endMoveDistFolderTime: number = (performance.now() - startMoveDistFolderTime) / 1000
+    console.log(`\u2705 move dist folder to destiny folder completed! time: ${endMoveDistFolderTime.toFixed(2)} seconds`)
+
+    // push to github
+    const startPushToGithub: number = performance.now()
+    const gitPushResponse: Response = await gitPush()
+
+    if(!gitPushResponse.status){
+        console.error(gitPushResponse)
+        return false
+    }
+
+    const endTimeGitPush: number = (performance.now() - startPushToGithub) / 1000
+    console.log(`\u2705 git push completed! time: ${endTimeGitPush.toFixed(2)} seconds`)
 
     const endTime: number = (performance.now() - startTime) / 1000
     console.log(`\u2705 deploy completed! total time: ${endTime.toFixed(2)} seconds`)
 
+    return true
+
 }
 
 /**
- * Build vue project from project path
+ * Build vue project from project path.
  * @returns { Promise } Promise with object of type Response.
  */
 const build = async (): Promise<Response> => {
@@ -69,6 +104,36 @@ const build = async (): Promise<Response> => {
 
     }
 
+}
+
+/**
+ * Clean destiny folder.
+ * @returns { Promise } Promise with object of type Response.
+ */
+const cleanFolder = async (): Promise<Response> => {
+    // TODO
+    const response : Response = { code: 1, status: true, msg: '' }
+    return response
+}
+
+/**
+ * Move dist folder to destiny folder.
+ * @returns { Promise } Promise with object of type Response.
+ */
+const moveDistFolder = async (): Promise<Response> => {
+    // TODO
+    const response : Response = { code: 1, status: true, msg: '' }
+    return response
+}
+
+/**
+ * pull changes to github
+ * @returns { Promise } Promise with object of type Response.
+ */
+const gitPush = async (): Promise<Response> => {
+    // TODO
+    const response : Response = { code: 1, status: true, msg: '' }
+    return response
 }
 
 init()
