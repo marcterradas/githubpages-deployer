@@ -1,0 +1,22 @@
+{
+  "name": "githubpages-deployer",
+  "version": "1.0.0",
+  "description": "Node.js script to automate deploy of vue app to github pages",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcterradas/githubpages-deployer.git"
+  },
+  "keywords": [
+    "node.js",
+    "typescript"
+  ],
+  "author": "Marc Terradas Zapata",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marcterradas/githubpages-deployer/issues"
+  },
+  "homepage": "https://github.com/marcterradas/githubpages-deployer#readme"
+}
