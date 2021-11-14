@@ -89,11 +89,11 @@ const build = async (): Promise<Response> => {
         return response
     }
 
-    const buildQuery : string = `npm run build --prefix ${projectPath}`
+    const query : string = `npm run build --prefix ${projectPath}`
 
     try {
 
-        const { stdout, stderr } = await exec(buildQuery);
+        const { stdout, stderr } = await exec(query);
         const response : Response = { code: 2, status: true, msg: 'build completed' }
         return response
 
@@ -139,9 +139,23 @@ const cleanFolder = async (): Promise<Response> => {
  * @returns { Promise } Promise with object of type Response.
  */
 const moveDistFolder = async (): Promise<Response> => {
-    // TODO
-    const response : Response = { code: 1, status: true, msg: '' }
-    return response
+    
+    // here is not required to validate two paths becouse they are validated in previous methods
+    const query = `cp -a ${projectPath}/dist/. ${githubPagePath}`
+
+    try {
+
+        const { stdout, stderr } = await exec(query);
+        const response : Response = { code: 1, status: true, msg: 'move dist folder to destiny folder completed' }
+        return response
+
+    } catch (error: any) {
+
+        const response : Response = { code: 2, status: false, msg: error }
+        return response
+
+    }
+
 }
 
 /**

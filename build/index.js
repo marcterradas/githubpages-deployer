@@ -104,7 +104,7 @@ var init = function () { return __awaiter(void 0, void 0, void 0, function () {
  * @returns { Promise } Promise with object of type Response.
  */
 var build = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var response, buildQuery, _a, stdout, stderr, response, error_1, response;
+    var response, query, _a, stdout, stderr, response, error_1, response;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -112,11 +112,11 @@ var build = function () { return __awaiter(void 0, void 0, void 0, function () {
                     response = { code: 1, status: false, msg: 'project path is required' };
                     return [2 /*return*/, response];
                 }
-                buildQuery = "npm run build --prefix " + projectPath;
+                query = "npm run build --prefix " + projectPath;
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, exec(buildQuery)];
+                return [4 /*yield*/, exec(query)];
             case 2:
                 _a = _b.sent(), stdout = _a.stdout, stderr = _a.stderr;
                 response = { code: 2, status: true, msg: 'build completed' };
@@ -164,10 +164,25 @@ var cleanFolder = function () { return __awaiter(void 0, void 0, void 0, functio
  * @returns { Promise } Promise with object of type Response.
  */
 var moveDistFolder = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var response;
-    return __generator(this, function (_a) {
-        response = { code: 1, status: true, msg: '' };
-        return [2 /*return*/, response];
+    var query, _a, stdout, stderr, response, error_3, response;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                query = "cp -a " + projectPath + "/dist/. " + githubPagePath;
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, exec(query)];
+            case 2:
+                _a = _b.sent(), stdout = _a.stdout, stderr = _a.stderr;
+                response = { code: 1, status: true, msg: 'move dist folder to destiny folder completed' };
+                return [2 /*return*/, response];
+            case 3:
+                error_3 = _b.sent();
+                response = { code: 2, status: false, msg: error_3 };
+                return [2 /*return*/, response];
+            case 4: return [2 /*return*/];
+        }
     });
 }); };
 /**
