@@ -4,6 +4,9 @@
   "description": "Node.js script to automate deploy of vue app to github pages",
   "main": "index.js",
   "scripts": {
+    "start": "npm run build && node build/index.js",
+    "dev": "nodemon",
+    "build": "rimraf ./build && tsc"
   },
   "repository": {
     "type": "git",
@@ -18,5 +21,16 @@
   "bugs": {
     "url": "https://github.com/marcterradas/githubpages-deployer/issues"
   },
-  "homepage": "https://github.com/marcterradas/githubpages-deployer#readme"
+  "homepage": "https://github.com/marcterradas/githubpages-deployer#readme",
+  "dependencies": {
+    "eslint": "^8.2.0",
+    "prettier": "^2.4.1",
+    "typescript": "^4.4.4"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.7",
+    "nodemon": "^2.0.15",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.4.0"
+  }
 }
