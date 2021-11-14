@@ -8,23 +8,40 @@ const githubPassword: string | undefined = process.env.GITHUB_PASSWORD
 const projectPath: string | undefined = process.env.PROJECT_PATH
 const githubPagePath: string | undefined = process.env.GITHUBPAGE_PATH
 
+interface Response {
+    code: number;
+    status: boolean;
+    msg: string;
+}
+
 const init = async () => {
 
-    const build = async () => {
+    const buildResponse = await build()
+    console.log(buildResponse)
 
-        const buildQuery : string = `npm run build --prefix ${projectPath}`
+}
 
-        try {
-            const { stdout, stderr } = await exec(buildQuery);
-            console.log('stdout:', stdout);
-            console.log('stderr:', stderr);
-        } catch (e) {
-            console.error(e);
-        }
+const build = async (): Promise<Response> => {
 
+    if(!projectPath) {
+        const response : Response = { code: 1, status: false, msg: 'project path is required' }
+        return response
     }
 
-    build()
+    const buildQuery : string = `npm run build --prefix ${projectPath}`
+
+    try {
+
+        const { stdout, stderr } = await exec(buildQuery);
+        const response : Response = { code: 2, status: true, msg: 'build completed' }
+        return response
+
+    } catch (error: any) {
+
+        const response : Response = { code: 3, status: false, msg: error }
+        return response
+
+    }
 
 }
 

@@ -43,33 +43,41 @@ var githubPassword = process.env.GITHUB_PASSWORD;
 var projectPath = process.env.PROJECT_PATH;
 var githubPagePath = process.env.GITHUBPAGE_PATH;
 var init = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var build;
+    var buildResponse;
     return __generator(this, function (_a) {
-        build = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var buildQuery, _a, stdout, stderr, e_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        buildQuery = "npm run build --prefix " + projectPath;
-                        _b.label = 1;
-                    case 1:
-                        _b.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, exec(buildQuery)];
-                    case 2:
-                        _a = _b.sent(), stdout = _a.stdout, stderr = _a.stderr;
-                        console.log('stdout:', stdout);
-                        console.log('stderr:', stderr);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        e_1 = _b.sent();
-                        console.error(e_1);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, build()];
+            case 1:
+                buildResponse = _a.sent();
+                console.log(buildResponse);
+                return [2 /*return*/];
+        }
+    });
+}); };
+var build = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var response, buildQuery, _a, stdout, stderr, response, error_1, response;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                if (!projectPath) {
+                    response = { code: 1, status: false, msg: 'project path is required' };
+                    return [2 /*return*/, response];
                 }
-            });
-        }); };
-        build();
-        return [2 /*return*/];
+                buildQuery = "npm run build --prefix " + projectPath;
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, exec(buildQuery)];
+            case 2:
+                _a = _b.sent(), stdout = _a.stdout, stderr = _a.stderr;
+                response = { code: 2, status: true, msg: 'build completed' };
+                return [2 /*return*/, response];
+            case 3:
+                error_1 = _b.sent();
+                response = { code: 3, status: false, msg: error_1 };
+                return [2 /*return*/, response];
+            case 4: return [2 /*return*/];
+        }
     });
 }); };
 init();
