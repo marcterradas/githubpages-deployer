@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/marcterradas/githubpages-deployer#readme",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "eslint": "^8.2.0",
     "prettier": "^2.4.1",
     "typescript": "^4.4.4"

@@ -1,2 +1,3 @@
 "use strict";
-console.log('init project');
+require('dotenv').config();
+console.log(process.env.GITHUB_USERNAME);
