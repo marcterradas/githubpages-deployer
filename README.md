@@ -3,7 +3,8 @@ Node.js script to automate deploy of vue app to github pages
 
 create .env file in the root folder with the following variables:
 ```
-PROJECT_FOLDER=/directory
+PROJECT_FOLDER=/origin
+GITHUBPAGE_PATH=/destiny
 GITHUB_USERNAME=username
 GITHUB_PASSWORD=password
 ```
