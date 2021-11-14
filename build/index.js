@@ -36,8 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 require('dotenv').config();
-var util = require('util');
-var exec = util.promisify(require('child_process').exec);
+var promisify = require('util').promisify;
+var exec = promisify(require('child_process').exec);
 var performance = require('perf_hooks').performance;
 var githubUsername = process.env.GITHUB_USERNAME;
 var githubPassword = process.env.GITHUB_PASSWORD;

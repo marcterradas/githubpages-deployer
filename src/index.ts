@@ -1,7 +1,7 @@
 require('dotenv').config()
 
-const util = require('util')
-const exec = util.promisify(require('child_process').exec)
+const {promisify} = require('util')
+const exec = promisify(require('child_process').exec)
 const { performance } = require('perf_hooks');
 
 const githubUsername: string | undefined = process.env.GITHUB_USERNAME
