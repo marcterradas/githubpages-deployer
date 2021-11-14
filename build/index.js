@@ -38,22 +38,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 require('dotenv').config();
 var util = require('util');
 var exec = util.promisify(require('child_process').exec);
+var performance = require('perf_hooks').performance;
 var githubUsername = process.env.GITHUB_USERNAME;
 var githubPassword = process.env.GITHUB_PASSWORD;
 var projectPath = process.env.PROJECT_PATH;
 var githubPagePath = process.env.GITHUBPAGE_PATH;
+/**
+ * init method
+ */
 var init = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var buildResponse;
+    var startTime, startBuildTime, buildResponse, endBuildTime, endTime;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, build()];
+            case 0:
+                startTime = performance.now();
+                startBuildTime = performance.now();
+                return [4 /*yield*/, build()];
             case 1:
                 buildResponse = _a.sent();
-                console.log(buildResponse);
+                if (!buildResponse.status) {
+                    console.log(buildResponse);
+                    return [2 /*return*/];
+                }
+                endBuildTime = (performance.now() - startBuildTime) / 1000;
+                console.log("\u2705 build completed! time: " + endBuildTime.toFixed(2) + " seconds");
+                endTime = (performance.now() - startTime) / 1000;
+                console.log("\u2705 deploy completed! total time: " + endTime.toFixed(2) + " seconds");
                 return [2 /*return*/];
         }
     });
 }); };
+/**
+ * Build vue project from project path
+ * @returns { Promise } Promise with object of type Response.
+ */
 var build = function () { return __awaiter(void 0, void 0, void 0, function () {
     var response, buildQuery, _a, stdout, stderr, response, error_1, response;
     return __generator(this, function (_b) {
