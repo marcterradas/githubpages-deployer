@@ -40,8 +40,6 @@ var performance = require('perf_hooks').performance;
 var promisify = require('util').promisify;
 var exec = promisify(require('child_process').exec);
 var question = require('readline-sync').question;
-var githubUsername = process.env.GITHUB_USERNAME;
-var githubPassword = process.env.GITHUB_PASSWORD;
 var projectPath = process.env.PROJECT_PATH;
 var githubPagePath = process.env.GITHUBPAGE_PATH;
 /**
@@ -87,7 +85,7 @@ var init = function () { return __awaiter(void 0, void 0, void 0, function () {
                 endMoveDistFolderTime = (performance.now() - startMoveDistFolderTime) / 1000;
                 console.log("\u2705 move dist folder to destiny folder completed! time: " + endMoveDistFolderTime.toFixed(2) + " seconds");
                 startPushToGithub = performance.now();
-                return [4 /*yield*/, gitPush()];
+                return [4 /*yield*/, gitPush(commitMessage)];
             case 5:
                 gitPushResponse = _a.sent();
                 if (!gitPushResponse.status) {
@@ -103,8 +101,8 @@ var init = function () { return __awaiter(void 0, void 0, void 0, function () {
     });
 }); };
 /**
- *
- * @returns
+ * recursive function until user input string with length bigger than 0.
+ * @returns { String }
  */
 var askCommitMessage = function () {
     var answer = question('commit message: \n');
@@ -203,11 +201,34 @@ var moveDistFolder = function () { return __awaiter(void 0, void 0, void 0, func
  * pull changes to github
  * @returns { Promise } Promise with object of type Response.
  */
-var gitPush = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var response;
-    return __generator(this, function (_a) {
-        response = { code: 1, status: true, msg: '' };
-        return [2 /*return*/, response];
+var gitPush = function (commitMessage) { return __awaiter(void 0, void 0, void 0, function () {
+    var query1, query2, query3, _a, stdout1, stderr1, _b, stdout2, stderr2, _c, stdout3, stderr3, response, error_4, response;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
+            case 0:
+                query1 = "git -C " + githubPagePath + " add .";
+                query2 = "git -C " + githubPagePath + " commit -m \"" + commitMessage + "\"";
+                query3 = "git -C " + githubPagePath + " push";
+                _d.label = 1;
+            case 1:
+                _d.trys.push([1, 5, , 6]);
+                return [4 /*yield*/, exec(query1)];
+            case 2:
+                _a = _d.sent(), stdout1 = _a.stdout1, stderr1 = _a.stderr1;
+                return [4 /*yield*/, exec(query2)];
+            case 3:
+                _b = _d.sent(), stdout2 = _b.stdout2, stderr2 = _b.stderr2;
+                return [4 /*yield*/, exec(query3)];
+            case 4:
+                _c = _d.sent(), stdout3 = _c.stdout3, stderr3 = _c.stderr3;
+                response = { code: 1, status: true, msg: 'git push completed!' };
+                return [2 /*return*/, response];
+            case 5:
+                error_4 = _d.sent();
+                response = { code: 2, status: false, msg: error_4 };
+                return [2 /*return*/, response];
+            case 6: return [2 /*return*/];
+        }
     });
 }); };
 init();

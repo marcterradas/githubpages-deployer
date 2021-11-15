@@ -5,8 +5,6 @@ const {promisify} = require('util')
 const exec = promisify(require('child_process').exec)
 const question = require('readline-sync').question
 
-const githubUsername: string | undefined = process.env.GITHUB_USERNAME
-const githubPassword: string | undefined = process.env.GITHUB_PASSWORD
 const projectPath: string | undefined = process.env.PROJECT_PATH
 const githubPagePath: string | undefined = process.env.GITHUBPAGE_PATH
 
@@ -65,7 +63,7 @@ const init = async (): Promise<boolean> => {
 
     // push to github
     const startPushToGithub: number = performance.now()
-    const gitPushResponse: Response = await gitPush()
+    const gitPushResponse: Response = await gitPush( commitMessage )
 
     if(!gitPushResponse.status){
         console.error(gitPushResponse)
@@ -137,7 +135,7 @@ const cleanFolder = async (): Promise<Response> => {
         return response
     }
 
-    const query = `rm -rf ${githubPagePath}/*`
+    const query : string = `rm -rf ${githubPagePath}/*`
 
     try {
 
@@ -161,7 +159,7 @@ const cleanFolder = async (): Promise<Response> => {
 const moveDistFolder = async (): Promise<Response> => {
     
     // here is not required to validate two paths becouse they are validated in previous methods
-    const query = `cp -a ${projectPath}/dist/. ${githubPagePath}`
+    const query : string = `cp -a ${projectPath}/dist/. ${githubPagePath}`
 
     try {
 
@@ -182,10 +180,28 @@ const moveDistFolder = async (): Promise<Response> => {
  * pull changes to github
  * @returns { Promise } Promise with object of type Response.
  */
-const gitPush = async (): Promise<Response> => {
-    // TODO
-    const response : Response = { code: 1, status: true, msg: '' }
-    return response
+const gitPush = async ( commitMessage: string ): Promise<Response> => {
+
+    const query1 : string = `git -C ${githubPagePath} add .`
+    const query2 : string = `git -C ${githubPagePath} commit -m "${commitMessage}"`
+    const query3 : string = `git -C ${githubPagePath} push`
+
+    try {
+
+        const { stdout1, stderr1 } = await exec(query1)
+        const { stdout2, stderr2 } = await exec(query2)
+        const { stdout3, stderr3 } = await exec(query3)
+
+        const response : Response = { code: 1, status: true, msg: 'git push completed!' }
+        return response
+
+    } catch( error: any ){
+
+        const response : Response = { code: 2, status: false, msg: error }
+        return response
+
+    }
+
 }
 
 init()
