@@ -39,6 +39,7 @@ require('dotenv').config();
 var performance = require('perf_hooks').performance;
 var promisify = require('util').promisify;
 var exec = promisify(require('child_process').exec);
+var question = require('readline-sync').question;
 var githubUsername = process.env.GITHUB_USERNAME;
 var githubPassword = process.env.GITHUB_PASSWORD;
 var projectPath = process.env.PROJECT_PATH;
@@ -48,14 +49,16 @@ var githubPagePath = process.env.GITHUBPAGE_PATH;
  * @returns { Promise<boolean> } false if any error, true if all okay.
  */
 var init = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var startTime, startBuildTime, buildResponse, endBuildTime, startCleanFolderTime, cleanFolderResponse, endCleanFolderTime, startMoveDistFolderTime, moveDistFolderResponse, endMoveDistFolderTime, startPushToGithub, gitPushResponse, endTimeGitPush, endTime;
+    var commitMessage, startTime, startBuildTime, buildResponse, endBuildTime, startCleanFolderTime, cleanFolderResponse, endCleanFolderTime, startMoveDistFolderTime, moveDistFolderResponse, endMoveDistFolderTime, startPushToGithub, gitPushResponse, endTimeGitPush, endTime;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
+            case 0: return [4 /*yield*/, askCommitMessage()];
+            case 1:
+                commitMessage = _a.sent();
                 startTime = performance.now();
                 startBuildTime = performance.now();
                 return [4 /*yield*/, build()];
-            case 1:
+            case 2:
                 buildResponse = _a.sent();
                 if (!buildResponse.status) {
                     console.error(buildResponse);
@@ -65,7 +68,7 @@ var init = function () { return __awaiter(void 0, void 0, void 0, function () {
                 console.log("\u2705 build completed! time: " + endBuildTime.toFixed(2) + " seconds");
                 startCleanFolderTime = performance.now();
                 return [4 /*yield*/, cleanFolder()];
-            case 2:
+            case 3:
                 cleanFolderResponse = _a.sent();
                 if (!cleanFolderResponse.status) {
                     console.error(cleanFolderResponse);
@@ -75,7 +78,7 @@ var init = function () { return __awaiter(void 0, void 0, void 0, function () {
                 console.log("\u2705 clean destiny folder completed! time: " + endCleanFolderTime.toFixed(2) + " seconds");
                 startMoveDistFolderTime = performance.now();
                 return [4 /*yield*/, moveDistFolder()];
-            case 3:
+            case 4:
                 moveDistFolderResponse = _a.sent();
                 if (!moveDistFolderResponse.status) {
                     console.error(moveDistFolderResponse);
@@ -85,7 +88,7 @@ var init = function () { return __awaiter(void 0, void 0, void 0, function () {
                 console.log("\u2705 move dist folder to destiny folder completed! time: " + endMoveDistFolderTime.toFixed(2) + " seconds");
                 startPushToGithub = performance.now();
                 return [4 /*yield*/, gitPush()];
-            case 4:
+            case 5:
                 gitPushResponse = _a.sent();
                 if (!gitPushResponse.status) {
                     console.error(gitPushResponse);
@@ -99,6 +102,17 @@ var init = function () { return __awaiter(void 0, void 0, void 0, function () {
         }
     });
 }); };
+/**
+ *
+ * @returns
+ */
+var askCommitMessage = function () {
+    var answer = question('commit message: \n');
+    if (answer.length == 0) {
+        askCommitMessage();
+    }
+    return answer;
+};
 /**
  * Build vue project from project path.
  * @returns { Promise } Promise with object of type Response.

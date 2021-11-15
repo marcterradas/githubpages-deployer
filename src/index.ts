@@ -1,8 +1,9 @@
 require('dotenv').config()
 
-const { performance } = require('perf_hooks');
+const { performance } = require('perf_hooks')
 const {promisify} = require('util')
 const exec = promisify(require('child_process').exec)
+const question = require('readline-sync').question
 
 const githubUsername: string | undefined = process.env.GITHUB_USERNAME
 const githubPassword: string | undefined = process.env.GITHUB_PASSWORD
@@ -10,9 +11,9 @@ const projectPath: string | undefined = process.env.PROJECT_PATH
 const githubPagePath: string | undefined = process.env.GITHUBPAGE_PATH
 
 interface Response {
-    code: number;
-    status: boolean;
-    msg: string;
+    code: number
+    status: boolean
+    msg: string
 }
 
 /**
@@ -20,6 +21,9 @@ interface Response {
  * @returns { Promise<boolean> } false if any error, true if all okay.
  */
 const init = async (): Promise<boolean> => {
+
+    // ask user about commit message
+    const commitMessage: string = await askCommitMessage()
 
     const startTime: number = performance.now()
 
@@ -79,6 +83,22 @@ const init = async (): Promise<boolean> => {
 }
 
 /**
+ * recursive function until user input string with length bigger than 0.
+ * @returns { String }
+ */
+const askCommitMessage = (): string => {
+
+    const answer: string = question('commit message: \n')
+
+    if( answer.length == 0 ){
+        askCommitMessage()
+    }
+
+    return answer
+
+}
+
+/**
  * Build vue project from project path.
  * @returns { Promise } Promise with object of type Response.
  */
@@ -93,7 +113,7 @@ const build = async (): Promise<Response> => {
 
     try {
 
-        const { stdout, stderr } = await exec(query);
+        const { stdout, stderr } = await exec(query)
         const response : Response = { code: 2, status: true, msg: 'build completed' }
         return response
 
@@ -121,7 +141,7 @@ const cleanFolder = async (): Promise<Response> => {
 
     try {
 
-        const { stdout, stderr } = await exec(query);
+        const { stdout, stderr } = await exec(query)
         const response : Response = { code: 2, status: true, msg: 'clean destiny folder completed' }
         return response
 
@@ -145,7 +165,7 @@ const moveDistFolder = async (): Promise<Response> => {
 
     try {
 
-        const { stdout, stderr } = await exec(query);
+        const { stdout, stderr } = await exec(query)
         const response : Response = { code: 1, status: true, msg: 'move dist folder to destiny folder completed' }
         return response
 
