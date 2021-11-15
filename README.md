@@ -5,8 +5,6 @@ create .env file in the root folder with the following variables:
 ```
 PROJECT_FOLDER=/origin
 GITHUBPAGE_PATH=/destiny
-GITHUB_USERNAME=username
-GITHUB_PASSWORD=password
 ```
 
 ## Project setup
