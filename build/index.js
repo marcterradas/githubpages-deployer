@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 require('dotenv').config();
 var performance = require('perf_hooks').performance;
 var promisify = require('util').promisify;
@@ -232,3 +233,9 @@ var gitPush = function (commitMessage) { return __awaiter(void 0, void 0, void 0
     });
 }); };
 init();
+exports.default = {
+    askCommitMessage: askCommitMessage,
+    build: build,
+    cleanFolder: cleanFolder,
+    gitPush: gitPush
+};
