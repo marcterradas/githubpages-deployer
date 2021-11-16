@@ -177,3 +177,10 @@ const gitPush = async (commitMessage: string): Promise<Response> => {
 }
 
 init()
+
+export default {
+    askCommitMessage,
+    build,
+    cleanFolder,
+    gitPush
+}
