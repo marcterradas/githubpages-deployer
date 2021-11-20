@@ -27,9 +27,20 @@ test('cleanFolder', async () => {
     expect(cleanFolderResponse2.status).toBe(true)
 })
 
-// test('moveDistFolder', async () => {
-//     console.log('todo')
-// })
+test('moveDistFolder', async () => {
+    const moveDistFolderResponse1: Response = await moveDistFolder(undefined, undefined)
+    expect(moveDistFolderResponse1.status).toBe(false)
+
+    const moveDistFolderResponse2: Response = await moveDistFolder(projectPath, undefined)
+    expect(moveDistFolderResponse2.status).toBe(false)
+
+    const moveDistFolderResponse3: Response = await moveDistFolder(undefined, githubPagePath)
+    expect(moveDistFolderResponse3.status).toBe(false)
+
+    const moveDistFolderResponse4: Response = await moveDistFolder(projectPath, githubPagePath)
+    expect(moveDistFolderResponse4.status).toBe(true)
+
+})
 
 // test('gitPush', async () => {
 //     console.log('todo')
