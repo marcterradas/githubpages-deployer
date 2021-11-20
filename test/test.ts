@@ -12,9 +12,25 @@ test('askCommitMessage', async () => {
 })
 
 test('build', async () => {
-    const response1: Response = await build(undefined)
-    expect(response1.status).toBe(false)
+    const buildResponse1: Response = await build(undefined)
+    expect(buildResponse1.status).toBe(false)
 
-    const response2: Response = await build(projectPath)
-    expect(response2.status).toBe(true)
+    const buildResponse2: Response = await build(projectPath)
+    expect(buildResponse2.status).toBe(true)
 })
+
+test('cleanFolder', async () => {
+    const cleanFolderResponse1: Response = await cleanFolder(undefined)
+    expect(cleanFolderResponse1.status).toBe(false)
+
+    const cleanFolderResponse2: Response = await cleanFolder(githubPagePath)
+    expect(cleanFolderResponse2.status).toBe(true)
+})
+
+// test('moveDistFolder', async () => {
+//     console.log('todo')
+// })
+
+// test('gitPush', async () => {
+//     console.log('todo')
+// })
