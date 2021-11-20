@@ -39,9 +39,18 @@ test('moveDistFolder', async () => {
 
     const moveDistFolderResponse4: Response = await moveDistFolder(projectPath, githubPagePath)
     expect(moveDistFolderResponse4.status).toBe(true)
-
 })
 
-// test('gitPush', async () => {
-//     console.log('todo')
-// })
+test('gitPush', async () => {
+    const gitPushResponse1: Response = await gitPush('', undefined)
+    expect(gitPushResponse1.status).toBe(false)
+
+    const gitPushResponse2: Response = await gitPush('test', undefined)
+    expect(gitPushResponse2.status).toBe(false)
+
+    const gitPushResponse3: Response = await gitPush('', githubPagePath)
+    expect(gitPushResponse3.status).toBe(false)
+
+    const gitPushResponse4: Response = await gitPush('test', githubPagePath)
+    expect(gitPushResponse4.status).toBe(true)
+})
