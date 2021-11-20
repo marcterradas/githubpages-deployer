@@ -100,12 +100,11 @@ export const moveDistFolder = async (projectPath: string | undefined, githubPage
  * @returns { Promise } Promise with object of type Response.
  */
 export const gitPush = async (commitMessage: string, githubPagePath: string | undefined): Promise<Response> => {
-    
-    if(commitMessage.trim() == ''){
+    if (commitMessage.trim() == '') {
         const response: Response = { code: 1, status: false, msg: 'commit message is required' }
         return response
     }
-    
+
     if (!githubPagePath) {
         const response: Response = { code: 2, status: false, msg: 'github page path is required' }
         return response

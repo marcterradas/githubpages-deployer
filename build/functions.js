@@ -160,12 +160,16 @@ exports.moveDistFolder = moveDistFolder;
  * @returns { Promise } Promise with object of type Response.
  */
 var gitPush = function (commitMessage, githubPagePath) { return __awaiter(void 0, void 0, void 0, function () {
-    var response, query1, query2, query3, _a, stdout1, stderr1, _b, stdout2, stderr2, _c, stdout3, stderr3, response, error_4, response;
+    var response, response, query1, query2, query3, _a, stdout1, stderr1, _b, stdout2, stderr2, _c, stdout3, stderr3, response, error_4, response;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
+                if (commitMessage.trim() == '') {
+                    response = { code: 1, status: false, msg: 'commit message is required' };
+                    return [2 /*return*/, response];
+                }
                 if (!githubPagePath) {
-                    response = { code: 1, status: false, msg: 'github page path is required' };
+                    response = { code: 2, status: false, msg: 'github page path is required' };
                     return [2 /*return*/, response];
                 }
                 query1 = "git -C " + githubPagePath + " add .";
