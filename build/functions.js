@@ -123,10 +123,18 @@ exports.cleanFolder = cleanFolder;
  * @returns { Promise } Promise with object of type Response.
  */
 var moveDistFolder = function (projectPath, githubPagePath) { return __awaiter(void 0, void 0, void 0, function () {
-    var query, _a, stdout, stderr, response, error_3, response;
+    var response, response, query, _a, stdout, stderr, response, error_3, response;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
+                if (!projectPath) {
+                    response = { code: 1, status: false, msg: 'project path is required' };
+                    return [2 /*return*/, response];
+                }
+                if (!githubPagePath) {
+                    response = { code: 1, status: false, msg: 'github page path is required' };
+                    return [2 /*return*/, response];
+                }
                 query = "cp -a " + projectPath + "/dist/. " + githubPagePath;
                 _b.label = 1;
             case 1:
@@ -152,10 +160,14 @@ exports.moveDistFolder = moveDistFolder;
  * @returns { Promise } Promise with object of type Response.
  */
 var gitPush = function (commitMessage, githubPagePath) { return __awaiter(void 0, void 0, void 0, function () {
-    var query1, query2, query3, _a, stdout1, stderr1, _b, stdout2, stderr2, _c, stdout3, stderr3, response, error_4, response;
+    var response, query1, query2, query3, _a, stdout1, stderr1, _b, stdout2, stderr2, _c, stdout3, stderr3, response, error_4, response;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
+                if (!githubPagePath) {
+                    response = { code: 1, status: false, msg: 'github page path is required' };
+                    return [2 /*return*/, response];
+                }
                 query1 = "git -C " + githubPagePath + " add .";
                 query2 = "git -C " + githubPagePath + " commit -m \"" + commitMessage + "\"";
                 query3 = "git -C " + githubPagePath + " push";

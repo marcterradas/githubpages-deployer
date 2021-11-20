@@ -71,7 +71,16 @@ export const cleanFolder = async (githubPagePath: string | undefined): Promise<R
  * @returns { Promise } Promise with object of type Response.
  */
 export const moveDistFolder = async (projectPath: string | undefined, githubPagePath: string | undefined): Promise<Response> => {
-    // here is not required to validate two paths becouse they are validated in previous methods
+    if (!projectPath) {
+        const response: Response = { code: 1, status: false, msg: 'project path is required' }
+        return response
+    }
+
+    if (!githubPagePath) {
+        const response: Response = { code: 1, status: false, msg: 'github page path is required' }
+        return response
+    }
+
     const query: string = `cp -a ${projectPath}/dist/. ${githubPagePath}`
 
     try {
@@ -91,6 +100,11 @@ export const moveDistFolder = async (projectPath: string | undefined, githubPage
  * @returns { Promise } Promise with object of type Response.
  */
 export const gitPush = async (commitMessage: string, githubPagePath: string | undefined): Promise<Response> => {
+    if (!githubPagePath) {
+        const response: Response = { code: 1, status: false, msg: 'github page path is required' }
+        return response
+    }
+
     const query1: string = `git -C ${githubPagePath} add .`
     const query2: string = `git -C ${githubPagePath} commit -m "${commitMessage}"`
     const query3: string = `git -C ${githubPagePath} push`
